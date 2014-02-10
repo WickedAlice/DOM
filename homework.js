@@ -27,10 +27,8 @@ function openPopupFromLink(link) {
 	var re = /%s/;
 	var message = link.getAttribute('data-message').replace(re, link);
 
-    var i = 0;
-	
 	p = createPopup(link.getAttribute('data-title'), message, onOk);
-    var list = document.getElementsByClassName('content')
+   var list = document.getElementsByClassName('content')
 	list[0].appendChild(p);
 
 }

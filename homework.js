@@ -5,10 +5,9 @@
  */
 
 document.onclick = function _onMouseClick(e) {
-	if(e.target.className =="popup-link"){
+	if(e.target.className == "popup-link"){
 	  	e.preventDefault();
 	  	e.stopPropagation();
-		var t = e.target.getAttribute('data-title');
 		openPopupFromLink(e.target);
 	  	return false; 
 	}
@@ -21,13 +20,14 @@ document.onclick = function _onMouseClick(e) {
  */
 function openPopupFromLink(link) { 
 	var p;
-	var onOk = function () { 
-		var l = link;	
-		document.location.href = l; 
+	var onOk = function() { 
+		document.location.href = link; 
 	}
 
 	var re = /%s/;
 	var message = link.getAttribute('data-message').replace(re, link);
+
+    var i = 0;
 	
 	p = createPopup(link.getAttribute('data-title'), message, onOk);
     var list = document.getElementsByClassName('content')
@@ -44,35 +44,47 @@ function openPopupFromLink(link) {
 */
 
 function createPopup(title, message, onOk) {
-    var wrap, popup, divTitle, divMessage, inputOk, inputNo;
-    
-    wrap = document.createElement('div');
-    wrap.className += "message-wrap";
-    popup = document.createElement('div');
-    popup.className += "my-message";
-    wrap.appendChild(popup);
-    divTitle = document.createElement('div');
-    divMessage = document.createElement('div');
-    divTitle.className +="my-message-title";
-    divMessage.className +="my-message-body";
-    divTitle.innerHTML = title;
-    divMessage.innerHTML = message;
-    popup.appendChild(divTitle);
-    popup.appendChild(divMessage);
-    inputOk = document.createElement('input');
-    inputOk.setAttribute("type","button");
-    inputOk.setAttribute("value","OK");
-    inputOk.onclick=onOk;
-    popup.appendChild(inputOk);
-    inputNo = document.createElement('input');
-    inputNo.setAttribute("type","button");
-    inputNo.setAttribute("value","Не надо");
 
-    inputNo.onclick = function(){
-        wrap.parentNode.removeChild(wrap)
-    };
+    var t = document.getElementsByClassName('message-wrap');
 
-    popup.appendChild(inputNo);
+    if (!t[0]) {
+
+        var f = function() {
+            wrap = document.createElement('div');
+            wrap.className += "message-wrap";
+            popup = document.createElement('div');
+            popup.className += "my-message";
+            wrap.appendChild(popup);
+            divTitle = document.createElement('div');
+            divMessage = document.createElement('div');
+            divTitle.className +="my-message-title";
+            divMessage.className +="my-message-body";
+            divTitle.innerHTML = title;
+            divMessage.innerHTML = message;
+            popup.appendChild(divTitle);
+            popup.appendChild(divMessage);
+            inputOk = document.createElement('input');
+            inputOk.setAttribute("type","button");
+            inputOk.setAttribute("value","OK");
+            inputOk.onclick=onOk;
+            popup.appendChild(inputOk);
+            inputNo = document.createElement('input');
+            inputNo.setAttribute("type","button");
+            inputNo.setAttribute("value","Не надо");
+        
+            inputNo.onclick = function(){
+                wrap.style.display = 'none';
+            };
+        
+            popup.appendChild(inputNo);
+        }();
+    }
+
+    else {
+        divTitle.innerHTML = title;
+        divMessage.innerHTML = message;
+        wrap.style.display = '';
+    }
 
 	return wrap;
 

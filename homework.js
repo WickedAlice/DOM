@@ -19,18 +19,13 @@ document.onclick = function _onMouseClick(e) {
  * @param {HTMLElement} link Ссылка с data-аттрибутами
  */
 function openPopupFromLink(link) { 
-	var p;
-	var onOk = function() { 
-		document.location.href = link; 
-	}
-
-	var re = /%s/;
-	var message = link.getAttribute('data-message').replace(re, link);
-
-	p = createPopup(link.getAttribute('data-title'), message, onOk);
-   var list = document.getElementsByClassName('content')
-	list[0].appendChild(p);
-
+	document.getElementsByClassName('content')[0].appendChild(
+    	createPopup(
+            link.getAttribute('data-title'),
+            link.getAttribute('data-message').replace(/%s/, link),
+            function() { document.location.href = link; }    
+        )
+    );
 }
 
 /**
@@ -49,14 +44,14 @@ function createPopup(title, message, onOk) {
 
         var f = function() {
             wrap = document.createElement('div');
-            wrap.className += "message-wrap";
+            wrap.className = "message-wrap";
             popup = document.createElement('div');
-            popup.className += "my-message";
+            popup.className = "my-message";
             wrap.appendChild(popup);
             divTitle = document.createElement('div');
             divMessage = document.createElement('div');
-            divTitle.className +="my-message-title";
-            divMessage.className +="my-message-body";
+            divTitle.className = "my-message-title";
+            divMessage.className = "my-message-body";
             divTitle.innerHTML = title;
             divMessage.innerHTML = message;
             popup.appendChild(divTitle);
@@ -64,7 +59,7 @@ function createPopup(title, message, onOk) {
             inputOk = document.createElement('input');
             inputOk.setAttribute("type","button");
             inputOk.setAttribute("value","OK");
-            inputOk.onclick=onOk;
+            inputOk.onclick = onOk;
             popup.appendChild(inputOk);
             inputNo = document.createElement('input');
             inputNo.setAttribute("type","button");
@@ -79,6 +74,7 @@ function createPopup(title, message, onOk) {
     }
 
     else {
+        inputOk.onclick = onOk;
         divTitle.innerHTML = title;
         divMessage.innerHTML = message;
         wrap.style.display = '';
@@ -87,11 +83,3 @@ function createPopup(title, message, onOk) {
 	return wrap;
 
 }
-
-
-
-
-
-
-
-

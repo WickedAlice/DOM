@@ -4,7 +4,9 @@
  * @private
  */
 
-document.onclick = function _onMouseClick(e) {
+document.addEventListener( "click" ,_onMouseClick, false);
+
+function _onMouseClick(e) {
 	if(e.target.className == "popup-link"){
 	  	e.preventDefault();
 	  	e.stopPropagation();
@@ -39,6 +41,7 @@ function openPopupFromLink(link) {
 function createPopup(title, message, onOk) {
 
     var t = document.getElementsByClassName('message-wrap');
+    var wrap, popup, divTitle, divMessage, inputOk, inputNo;
 
     if (!t[0]) {
 
